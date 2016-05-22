@@ -113,7 +113,9 @@
     id existInfo = [_infos member:info];
     OSSpinLockUnlock(&_lock);
     
-    NSAssert(!existInfo, @"Notification already exists %@", existInfo);
+    if (existInfo) {
+        NSAssert(!existInfo, @"Notification already exists %@", existInfo);
+    }
     
     id observer = [[NSNotificationCenter defaultCenter] addObserverForName:info->_name object:info->_sender queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         info->_block(note);
